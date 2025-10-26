@@ -3,11 +3,12 @@ import { useAppContext } from '../context/AppContext'
 import Logo from '../assets/Photo_1757667664451.png'
 import Message from '../components/Message';
 import { assets } from '../assets/assets';
+import toast from 'react-hot-toast';
 
 const Chatbox = () => {
 
   const containerRef = useRef(null);
-  const { selectedChat, theme } = useAppContext();
+  const { selectedChat, theme, user, axios, token, setUser} = useAppContext();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [prompt, setPrompt] = useState('');
@@ -15,7 +16,32 @@ const Chatbox = () => {
   const [isPublished, setIsPublished] = useState(false);
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
+      if (!user) return toast('login to send message.')
+      setLoading(true);
+      const promptCopy = prompt;
+      setPrompt('');
+      setMessages(prev => [...prev, { role: 'User', content: prompt, timestamp: Date.now(), isImage: false }])
+      const { data } = await axios.post(`/api/message/${mode}`, { chatId: selectedChat._id, prompt: prompt, isPublished }, { headers: { Authorization: token } })
+      if (data.success) {
+        setMessages(prev => [...prev, data.reply]);
+        // if (mode == 'image') {
+        //   setUser(prev => ({ ...prev, credits: prev.credits - 2 }))
+        // } else {
+        //   setUser(prev => ({ ...prev, credits: prev.credits - 1 }))
+        // }
+      } else {
+        toast.error(data.message)
+        setPrompt(promptCopy)
+      }
+    } catch (error) {
+      toast.error(error.message)
+
+    } finally {
+      setPrompt('')
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -86,7 +112,7 @@ const Chatbox = () => {
             </svg>
             <span class="sr-only">Add emoji</span>
           </button>
-          <textarea onChange={(e) => setPrompt(e.target.value)} value={prompt} id="chat" rows="1" class="block resize-none mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your message..."></textarea>
+          <input type='text' onChange={(e) => setPrompt(e.target.value)} value={prompt} id="chat" rows="1" class="block resize-none mx-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your message..." />
           <button disabled={loading} type="submit" class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
             <svg class="w-5 h-5 rotate-90 rtl:-rotate-90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
               <path d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z" />

@@ -20,3 +20,24 @@
 .loader div:nth-child(3){
   animation-delay: 0.4s;
 }
+
+/* App.css */
+@font-face {
+  font-family: 'Vazir';
+  src: url('./assets/fonts/vazir/Vazir.woff2') format('woff2'),
+       url('./assets/fonts/vazir/Vazir.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Tanha';
+  src: url('./assets/fonts/tanha/Tanha.woff2') format('woff2'),
+       url('./assets/fonts/tanha/Tanha.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Tanha', sans-serif;
+}

@@ -12,10 +12,10 @@ const Message = ({ message }) => {
 
   return (
     <div>
-      {message.role == 'user' ? (
+      {message.role == 'User' ? (
         <div className='flex items-center justify-end my-4 gap-2'>
           <div className='flex flex-col gap-2 px-4 bg-slate-50 dark:bg-[#57317c]/30 border border-[#80609f]/30 rounded-md max-w-2xl'>
-            <p className='text-sm dark:text-primary pt-3'>{message.content}</p>
+            <p className='text-sm dark:text-primary pt-3' dir='rtl'>{message.content}</p>
             <span className='text-xs text-gray-400 dark:text-[#b1a6b0] mb-2'>{moment(message.timestamp).fromNow()}</span>
           </div>
           <img src={assets.user_icon} alt=""  className='w-8 rounded-full'/>
@@ -28,7 +28,7 @@ const Message = ({ message }) => {
               <img src={message.content} className='w-full max-w-md mt-2' />
             ):
             (
-              <div className='text-sm dark:text-primary reset-tw'>
+              <div className='text-sm dark:text-primary reset-tw' dir='rtl'>
                 <Markdown>
                   {message.content}
                 </Markdown>
