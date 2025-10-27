@@ -36,8 +36,20 @@
        url('./assets/fonts/tanha/Tanha.woff') format('woff');
   font-weight: normal;
   font-style: normal;
+  
 }
 
+@font-face {
+  font-family: 'Iran';
+  src: url('./assets/fonts/Iran/IRAN.woff2') format('woff2'),
+       url('./assets/fonts/Iran/IRAN.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  
+}
+
+
 body {
-  font-family: 'Tanha', sans-serif;
+  font-family: 'Vazir', sans-serif;
+
 }
